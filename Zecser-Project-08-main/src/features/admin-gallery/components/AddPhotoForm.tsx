@@ -1,22 +1,22 @@
-import { Upload } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import { useAddPhoto } from "../hooks/useAddPhoto";
 
 const AddPhotoForm = () => {
   const {
     fileInputRef,
-    preview,
+    previews,
     status,
     loading,
     handleFileChange,
     handleSubmit,
     handleReset,
+    removeImage,
     setStatus,
   } = useAddPhoto();
 
   return (
     <>
-      {/* Toast Notifications */}
       <Toaster position="top-right" />
 
       <form
@@ -34,29 +34,43 @@ const AddPhotoForm = () => {
               className="border-2 border-dashed border-primary flex flex-col items-center justify-center w-full h-full bg-white rounded cursor-pointer"
               onClick={() => fileInputRef.current?.click()}
             >
-              {preview ? (
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="w-full h-full object-cover rounded"
-                />
-              ) : (
-                <>
-                  <Upload className="h-8 w-8 text-primary mb-2" />
-                  <span className="bg-primary text-white px-4 py-1 rounded text-sm">
-                    Upload
-                  </span>
-                </>
-              )}
+              <Upload className="h-8 w-8 text-primary mb-2" />
+              <span className="bg-primary text-white px-4 py-1 rounded text-sm">
+                Upload
+              </span>
+
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 className="hidden"
                 ref={fileInputRef}
                 onChange={handleFileChange}
               />
             </div>
           </div>
+
+          {/* Preview Thumbnails */}
+          {previews.length > 0 && (
+            <div className="flex flex-wrap gap-4 mt-8 ">
+              {previews.map((src, idx) => (
+                <div key={idx} className="relative w-28 h-28">
+                  <img
+                    src={src}
+                    alt={`Preview ${idx + 1}`}
+                    className="w-full h-full object-cover rounded border border-gray-300"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(idx)}
+                    className="absolute top-1 right-1 bg-red-500 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Status Radio Buttons */}
           <div className="w-full max-w-[866px] mt-10">

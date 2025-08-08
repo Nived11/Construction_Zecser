@@ -1,24 +1,27 @@
-import { Upload, Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-import { useServiceForm } from "../hooks/useServiceForm";
+import { useServiceForm  } from "../hooks/useServiceForm";
+import ServiceImages from "./ServiceImages";
+
 
 const AddServiceForm = () => {
   const {
     serviceName, setServiceName,
     serviceSubTitle, setServiceSubTitle,
     serviceSubDescription, setServiceSubDescription,
-    offers, setOffers, addOffer,
-    whyUsList, setWhyUsList, addWhyUs,
+    offers, setOffers, addOffer, removeOffer,
+    whyUsList, setWhyUsList, addWhyUs, removeWhyUs,
     status, setStatus,
+    setServiceIcon,
+    setServiceBanner,
+    setServicePhoto,  
     serviceIconPreview, setServiceIconPreview,
     serviceBannerPreview, setServiceBannerPreview,
     servicePhotoPreview, setServicePhotoPreview,
     handleImageChange,
     handleSubmitForm,
     handleCancel,
-    setServiceIcon,
-    setServiceBanner,
-    setServicePhoto,
+    
     errors,
   } = useServiceForm();
 
@@ -37,99 +40,27 @@ const AddServiceForm = () => {
               className="w-full px-4 py-2 border border-primary rounded focus:outline-none focus:ring-1 focus:ring-primary"
             />
             {errors.serviceName && (
-              <span className="text-red-500 text-sm">{errors.serviceName}</span>
+              <span className="text-red-500 text-sm">{errors.serviceName}*</span>
             )}
           </div>
 
           {/* Icons Row */}
-          <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
-            {/* Service Icon */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Service Icon</label>
-              <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
-                {serviceIconPreview ? (
-                  <img src={serviceIconPreview} alt="Preview" className="w-full h-full object-cover" />
-                ) : (
-                  <Upload className="h-8 w-8 text-primary mb-2" />
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="serviceIcon"
-                  onChange={(e) => handleImageChange(e, setServiceIcon, setServiceIconPreview)}
-                />
-                <label
-                  htmlFor="serviceIcon"
-                  className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
-                >
-                  Upload
-                </label>
-              </div>
-              {errors.serviceIcon && (
-                <span className="text-red-500 text-sm">{errors.serviceIcon}</span>
-              )}
-            </div>
-
-            {/* Service Banner */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Service Banner</label>
-              <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
-                {serviceBannerPreview ? (
-                  <img src={serviceBannerPreview} alt="Preview" className="w-full h-full object-cover" />
-                ) : (
-                  <Upload className="h-8 w-8 text-primary mb-2" />
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="serviceBanner"
-                  onChange={(e) => handleImageChange(e, setServiceBanner, setServiceBannerPreview)}
-                />
-                <label
-                  htmlFor="serviceBanner"
-                  className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
-                >
-                  Upload
-                </label>
-              </div>
-              {errors.serviceBanner && (
-                <span className="text-red-500 text-sm">{errors.serviceBanner}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Service Photo */}
-          <div className="w-[176px] h-[130px] lg:w-[380px] lg:h-[158px]">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Service Photo</label>
-            <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-full h-full overflow-hidden">
-              {servicePhotoPreview ? (
-                <img src={servicePhotoPreview} alt="Preview" className="w-full h-full object-cover" />
-              ) : (
-                <Upload className="h-8 w-8 text-primary mb-2" />
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                id="servicePhoto"
-                onChange={(e) => handleImageChange(e, setServicePhoto, setServicePhotoPreview)}
-              />
-              <label
-                htmlFor="servicePhoto"
-                className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
-              >
-                Upload
-              </label>
-            </div>
-            {errors.servicePhoto && (
-              <span className="text-red-500 text-sm">{errors.servicePhoto}</span>
-            )}
-          </div>
+          <ServiceImages
+  serviceIconPreview={serviceIconPreview}
+  setServiceIconPreview={setServiceIconPreview}
+  serviceBannerPreview={serviceBannerPreview}
+  setServiceBannerPreview={setServiceBannerPreview}
+  servicePhotoPreview={servicePhotoPreview}
+  setServicePhotoPreview={setServicePhotoPreview}
+  handleImageChange={handleImageChange}
+  setServiceIcon={setServiceIcon}
+  setServiceBanner={setServiceBanner}
+  setServicePhoto={setServicePhoto}
+  errors={errors}
+/>
 
           {/* Service Sub Title */}
-          <div className="w-full max-w-[866px] mt-10">
+          <div className="w-full max-w-[866px] mt-15">
             <label className="block text-sm font-medium text-gray-700 mb-2">Service Sub Title</label>
             <input
               type="text"
@@ -138,7 +69,7 @@ const AddServiceForm = () => {
               className="w-full px-4 py-2 border border-primary"
             />
             {errors.serviceSubTitle && (
-              <span className="text-red-500 text-sm">{errors.serviceSubTitle}</span>
+              <span className="text-red-500 text-sm">{errors.serviceSubTitle}*</span>
             )}
           </div>
 
@@ -152,7 +83,7 @@ const AddServiceForm = () => {
               className="w-full px-4 py-2 border border-primary"
             />
             {errors.serviceSubDescription && (
-              <span className="text-red-500 text-sm">{errors.serviceSubDescription}</span>
+              <span className="text-red-500 text-sm">{errors.serviceSubDescription}*</span>
             )}
           </div>
 
@@ -175,12 +106,11 @@ const AddServiceForm = () => {
                 />
                 {errors[`offer_heading_${index}`] && (
                   <span className="text-red-500 text-sm">
-                    {errors[`offer_heading_${index}`]}
+                    {errors[`offer_heading_${index}`]}*
                   </span>
                 )}
               </div>
 
-              {/* Description + Button */}
               <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -198,11 +128,24 @@ const AddServiceForm = () => {
                   />
                   {errors[`whyus_description_${index}`] && (
                     <span className="text-red-500 text-sm">
-                      {errors[`whyus_description_${index}`]}
+                      {errors[`whyus_description_${index}`]}*
                     </span>
                   )}
                 </div>
-                {index === offers.length - 1 && (
+
+                {/* Remove Button */}
+                {offers.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeOffer(index)}
+                    className="bg-red-500 text-white px-3 py-2 mt-1 sm:mt-[30px] w-10"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                )}
+
+                {/* Add Button */}
+                {index === offers.length - 1 && offers.length < 6 && (
                   <button
                     type="button"
                     onClick={addOffer}
@@ -218,6 +161,7 @@ const AddServiceForm = () => {
           {/* Why Us - Dynamic */}
           {whyUsList.map((item, index) => (
             <div key={index} className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
+              {/* Heading */}
               <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Why Us Heading
@@ -234,12 +178,12 @@ const AddServiceForm = () => {
                 />
                 {errors[`whyus_heading_${index}`] && (
                   <span className="text-red-500 text-sm">
-                    {errors[`whyus_heading_${index}`]}
+                    {errors[`whyus_heading_${index}`]}*
                   </span>
                 )}
               </div>
 
-              {/* Description + Button */}
+              {/* Description + Buttons */}
               <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -257,11 +201,24 @@ const AddServiceForm = () => {
                   />
                   {errors[`whyus_description_${index}`] && (
                     <span className="text-red-500 text-sm">
-                      {errors[`whyus_description_${index}`]}
+                      {errors[`whyus_description_${index}`]}*
                     </span>
                   )}
                 </div>
-                {index === whyUsList.length - 1 && (
+
+                {/* Remove Button */}
+                {whyUsList.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeWhyUs(index)}
+                    className="bg-red-500 text-white px-3 py-2 mt-1 sm:mt-[30px] w-10"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                )}
+
+                {/* Add Button */}
+                {index === whyUsList.length - 1 && whyUsList.length < 6 && (
                   <button
                     type="button"
                     onClick={addWhyUs}
@@ -273,6 +230,7 @@ const AddServiceForm = () => {
               </div>
             </div>
           ))}
+
 
           {/* Status */}
           <div className="w-full max-w-[866px]">

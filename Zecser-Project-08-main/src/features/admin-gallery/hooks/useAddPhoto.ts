@@ -1,51 +1,55 @@
 import { useState, useRef } from "react";
 import toast from "react-hot-toast";
-// import api from "../../../lib/api"; 
+// import api from "../../../lib/api";
 
 export const useAddPhoto = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Form fields
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
   const [status, setStatus] = useState<"active" | "inactive">("active");
   const [loading, setLoading] = useState(false);
 
   // File change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0];
-    if (selected) {
-      setFile(selected);
-      setPreview(URL.createObjectURL(selected));
+    const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
+
+    if (selectedFiles.length) {
+      setFiles((prev) => [...prev, ...selectedFiles]);
+
+      const newPreviews = selectedFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviews((prev) => [...prev, ...newPreviews]);
     }
   };
 
-  // Submit handler
+  // Remove a single image
+  const removeImage = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!file) return toast.error("Please upload a photo.");
+    if (files.length === 0) return toast.error("Please upload at least one photo.");
 
     setLoading(true);
 
     try {
-      // Prepare FormData for file upload
       const formData = new FormData();
-      formData.append("photo", file);
+      files.forEach((file) => formData.append("photos", file));
       formData.append("status", status);
-
 
       // const res = await api.post("/api/gallery", formData, {
       //   headers: { "Content-Type": "multipart/form-data" },
       // });
 
-      toast.success("Photo uploaded successfully!");
-      // console.log("Response:", res.data);
+      toast.success("Photos uploaded successfully!");
+      console.log([...formData.entries()]);
 
-      // Reset
-      setFile(null);
-      setPreview(null);
-      setStatus("active");
+     handleReset(); 
     } catch (err: any) {
       console.error(err);
       toast.error(err?.response?.data?.message || "Upload failed");
@@ -54,21 +58,21 @@ export const useAddPhoto = () => {
     }
   };
 
-  // Reset form
   const handleReset = () => {
-    setFile(null);
-    setPreview(null);
+    setFiles([]);
+    setPreviews([]);
     setStatus("active");
   };
 
   return {
     fileInputRef,
-    preview,
+    previews,
     status,
     loading,
     handleFileChange,
     handleSubmit,
     handleReset,
+    removeImage,
     setStatus,
   };
 };

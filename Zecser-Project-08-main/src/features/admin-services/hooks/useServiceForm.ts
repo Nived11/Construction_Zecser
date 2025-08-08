@@ -22,7 +22,7 @@ export const useServiceForm = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Handle image uploads
+  
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
@@ -35,17 +35,24 @@ export const useServiceForm = () => {
     }
   };
 
-  // Add new offer row
+ 
   const addOffer = () => {
     setOffers([...offers, { heading: "", description: "" }]);
   };
 
-  // Add new Why Us row
+ 
   const addWhyUs = () => {
     setWhyUsList([...whyUsList, { heading: "", description: "" }]);
   };
 
-  // Handle submit
+const removeOffer = (index: number) => {
+  setOffers(offers.filter((_, i) => i !== index));
+};
+
+const removeWhyUs = (index: number) => {
+  setWhyUsList(whyUsList.filter((_, i) => i !== index));
+};
+
   const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
     const errors = validateServiceForm({
@@ -113,8 +120,8 @@ export const useServiceForm = () => {
     serviceName, setServiceName,
     serviceSubTitle, setServiceSubTitle,
     serviceSubDescription, setServiceSubDescription,
-    offers, setOffers, addOffer,
-    whyUsList, setWhyUsList, addWhyUs,
+    offers, setOffers, addOffer, removeOffer,
+    whyUsList, setWhyUsList, addWhyUs, removeWhyUs,
     status, setStatus,
     serviceIconPreview, setServiceIconPreview,
     serviceBannerPreview, setServiceBannerPreview,

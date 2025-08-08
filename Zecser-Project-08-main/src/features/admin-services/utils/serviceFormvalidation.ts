@@ -20,6 +20,10 @@ export const validateServiceForm = (data: ServiceFormData): ValidationErrors => 
   // Service Name
   if (!data.serviceName.trim()) {
     errors.serviceName = "Service name is required";
+  } else if (data.serviceName.length < 3) {
+    errors.serviceName = "Service name must be at least 3 characters";
+  } else if (data.serviceName.length > 20) {
+    errors.serviceName = "Service name must be less than 20 characters";
   }
 
   // Service Icon
@@ -40,11 +44,17 @@ export const validateServiceForm = (data: ServiceFormData): ValidationErrors => 
   // Service Sub Title
   if (!data.serviceSubTitle.trim()) {
     errors.serviceSubTitle = "Service sub title is required";
+  } else if (data.serviceSubTitle.length < 3) {
+    errors.serviceSubTitle = "Min 3 characters required";
+  } else if (data.serviceSubTitle.length > 50) {
+    errors.serviceSubTitle = "Max 50 characters allowed";
   }
 
   // Service Sub Description
   if (!data.serviceSubDescription.trim()) {
     errors.serviceSubDescription = "Service sub description is required";
+  } else if (data.serviceSubDescription.length < 10) {
+    errors.serviceSubDescription = "Min 10 characters required";
   }
 
   // Offers
@@ -81,4 +91,34 @@ export const validateServiceForm = (data: ServiceFormData): ValidationErrors => 
   }
 
   return errors;
+};
+
+// ✅ Live per-field validation
+export const validateSingleField = (
+  name: string,
+  value: any
+): string => {
+  switch (name) {
+    case "serviceName":
+      if (!value.trim()) return "Service name is required";
+      if (value.length < 3) return "Min 3 characters required";
+      if (value.length > 20) return "Max 20 characters allowed";
+      break;
+
+    case "serviceSubTitle":
+      if (!value.trim()) return "Service sub title is required";
+      if (value.length < 3) return "Min 3 characters required";
+      if (value.length > 50) return "Max 50 characters allowed";
+      break;
+
+    case "serviceSubDescription":
+      if (!value.trim()) return "Service sub description is required";
+      if (value.length < 10) return "Min 10 characters required";
+      break;
+
+    case "status":
+      if (!value) return "Please select a status";
+      break;
+  }
+  return "";
 };
