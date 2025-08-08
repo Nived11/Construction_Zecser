@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
-import { getCroppedImg } from "../utils/cropImage"; // helper we'll create
+import { getCroppedImg } from "../utils/cropImage"; 
 import { Dialog } from "@headlessui/react";
 
 interface ImageCropModalProps {

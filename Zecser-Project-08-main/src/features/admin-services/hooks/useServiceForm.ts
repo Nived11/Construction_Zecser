@@ -129,6 +129,7 @@ const validateField = async (fieldName: string, value: any) => {
       // });
          console.log("Submitting form:", formData);
       toast.success("Service saved successfully!");
+      handleCancel();
       } catch (error) {
         console.error("Error submitting form:", error);
         toast.error("Failed to save service. Please try again.");

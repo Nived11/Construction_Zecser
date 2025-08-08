@@ -95,7 +95,7 @@ const AddServiceForm = () => {
             )}
           </div>
 
-          {/* Offers - Dynamic */}
+          {/* what we Offers  */}
           {offers.map((offer, index) => (
             <div key={index} className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
               <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
@@ -166,7 +166,7 @@ const AddServiceForm = () => {
             </div>
           ))}
 
-          {/* Why Us - Dynamic */}
+          {/* Why Us */}
           {whyUsList.map((item, index) => (
             <div key={index} className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
               <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
@@ -244,7 +244,8 @@ const AddServiceForm = () => {
               <label className="flex items-center space-x-2">
                 <span className="text-sm text-gray-700">Active</span>
                 <input
-                  className="appearance-none w-4 h-4 border-2 border-primary rounded-full checked:bg-white checked:border-[5px] checked:border-primary focus:outline-none cursor-pointer"
+                  className="appearance-none w-4 h-4 border-2 border-primary rounded-full 
+                  checked:bg-white checked:border-[5px] checked:border-primary focus:outline-none cursor-pointer"
                   type="radio"
                   value="active"
                   checked={status === "active"}
@@ -257,7 +258,8 @@ const AddServiceForm = () => {
               <label className="flex items-center space-x-2">
                 <span className="text-sm text-gray-700">Inactive</span>
                 <input
-                  className="appearance-none w-4 h-4 border-2 border-primary rounded-full checked:bg-white checked:border-[5px] checked:border-primary focus:outline-none cursor-pointer"
+                  className="appearance-none w-4 h-4 border-2 border-primary rounded-full 
+                  checked:bg-white checked:border-[5px] checked:border-primary focus:outline-none cursor-pointer"
                   type="radio"
                   value="inactive"
                   checked={status === "inactive"}
