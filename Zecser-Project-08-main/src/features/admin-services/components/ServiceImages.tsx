@@ -1,4 +1,3 @@
-// import { useServiceForm } from "../hooks/useServiceForm";
 import { Upload } from "lucide-react";
 import React, { useState } from "react";
 import ImageCropModal from "./ImageCropModal";
@@ -13,13 +12,14 @@ interface ServiceImagesProps {
   handleImageChange: (
     e: React.ChangeEvent<HTMLInputElement>,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
-    setPreview: React.Dispatch<React.SetStateAction<string | null>>
+    setPreview: React.Dispatch<React.SetStateAction<string | null>>,
+    fieldName: string
   ) => void;
   setServiceIcon: React.Dispatch<React.SetStateAction<File | null>>;
   setServiceBanner: React.Dispatch<React.SetStateAction<File | null>>;
   setServicePhoto: React.Dispatch<React.SetStateAction<File | null>>;
   errors: { [key: string]: string };
-} 
+}
 
 const ServiceImages: React.FC<ServiceImagesProps> = ({
   serviceIconPreview, setServiceIconPreview,
@@ -28,9 +28,8 @@ const ServiceImages: React.FC<ServiceImagesProps> = ({
   handleImageChange, setServiceIcon, setServiceBanner, setServicePhoto,
   errors
 }) => {
-    
 
-     const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
   const [tempImageSrc, setTempImageSrc] = useState<string | null>(null);
 
   const handleBannerSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +37,8 @@ const ServiceImages: React.FC<ServiceImagesProps> = ({
     if (file) {
       setTempImageSrc(URL.createObjectURL(file));
       setCropModalOpen(true);
+      // Live validation
+      handleImageChange(e, setServiceBanner, setServiceBannerPreview, "serviceBanner");
     }
   };
 
@@ -46,99 +47,103 @@ const ServiceImages: React.FC<ServiceImagesProps> = ({
     setServiceBannerPreview(previewUrl);
   };
 
-    return (
-   <>
-       <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
-           {/* Service Icon */}
-           <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Service Icon</label>
-               <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
-                   {serviceIconPreview ? (
-                       <img src={serviceIconPreview} alt="Preview" className="w-full h-full object-cover" />
-                   ) : (
-                       <Upload className="h-8 w-8 text-primary mb-2" />
-                   )}
-                   <input
-                       type="file"
-                       accept="image/*"
-                       className="hidden"
-                       id="serviceIcon"
-                       onChange={(e) => handleImageChange(e, setServiceIcon, setServiceIconPreview)}
-                   />
-                   <label
-                       htmlFor="serviceIcon"
-                       className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
-                   >
-                        {serviceIconPreview ? "Change" : "Upload"}
-                   </label>
-               </div>
-               {errors.serviceIcon && (
-                   <span className="text-red-500 text-sm">{errors.serviceIcon}*</span>
-               )}
-           </div>           {/* Service Banner */}
-           <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Service Banner</label>
-               <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
-                   {serviceBannerPreview ? (
-                       <img src={serviceBannerPreview} alt="Preview" className="w-full h-full object-cover" />
-                   ) : (
-                       <Upload className="h-8 w-8 text-primary mb-2" />
-                   )}
-                   <input
-                       type="file"
-                       accept="image/*"
-                       className="hidden"
-                       id="serviceBanner"
-                       onChange={handleBannerSelect}
-                   />
-                   <label
-                       htmlFor="serviceBanner"
-                       className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
-                   >
-                        {serviceBannerPreview ? "Change" : "Upload"}
-                   </label>
-               </div>
-               {errors.serviceBanner && (
-                   <span className="text-red-500 text-sm">{errors.serviceBanner}*</span>
-               )}
-           </div>
-       </div>       {/* Service Photo */}
-       <div className="w-[176px] h-[130px] lg:w-[380px] lg:h-[158px]">
-           <label className="block text-sm font-medium text-gray-700 mb-2">Service Photo</label>
-           <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-full h-full overflow-hidden">
-               {servicePhotoPreview ? (
-                   <img src={servicePhotoPreview} alt="Preview" className="w-full h-full object-cover" />
-               ) : (
-                   <Upload className="h-8 w-8 text-primary mb-2" />
-               )}
-               <input
-                   type="file"
-                   accept="image/*"
-                   className="hidden"
-                   id="servicePhoto"
-                   onChange={(e) => handleImageChange(e, setServicePhoto, setServicePhotoPreview)}
-               />
-               <label
-                   htmlFor="servicePhoto"
-                   className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
-               >
-                    {servicePhotoPreview ? "Change" : "Upload"}
-               </label>           </div>
-           {errors.servicePhoto && (
-               <span className="text-red-500 text-sm ">{errors.servicePhoto}*</span>
-           )}
-       </div>
+  return (
+    <>
+      <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
+        {/* Service Icon */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Service Icon</label>
+          <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
+            {serviceIconPreview ? (
+              <img src={serviceIconPreview} alt="Preview" className="w-full h-full object-cover" />
+            ) : (
+              <Upload className="h-8 w-8 text-primary mb-2" />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              id="serviceIcon"
+              onChange={(e) => handleImageChange(e, setServiceIcon, setServiceIconPreview, "serviceIcon")}
+            />
+            <label
+              htmlFor="serviceIcon"
+              className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              {serviceIconPreview ? "Change" : "Upload"}
+            </label>
+          </div>
+          {errors.serviceIcon && (
+            <span className="text-red-500 text-sm">{errors.serviceIcon}*</span>
+          )}
+        </div>
 
+        {/* Service Banner */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Service Banner</label>
+          <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
+            {serviceBannerPreview ? (
+              <img src={serviceBannerPreview} alt="Preview" className="w-full h-full object-cover" />
+            ) : (
+              <Upload className="h-8 w-8 text-primary mb-2" />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              id="serviceBanner"
+              onChange={handleBannerSelect}
+            />
+            <label
+              htmlFor="serviceBanner"
+              className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
+            >
+              {serviceBannerPreview ? "Change" : "Upload"}
+            </label>
+          </div>
+          {errors.serviceBanner && (
+            <span className="text-red-500 text-sm">{errors.serviceBanner}*</span>
+          )}
+        </div>
+      </div>
 
-        {/* Crop Modal */}
+      {/* Service Photo */}
+      <div className="w-[176px] h-[130px] lg:w-[380px] lg:h-[158px]">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Service Photo</label>
+        <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-full h-full overflow-hidden">
+          {servicePhotoPreview ? (
+            <img src={servicePhotoPreview} alt="Preview" className="w-full h-full object-cover" />
+          ) : (
+            <Upload className="h-8 w-8 text-primary mb-2" />
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            id="servicePhoto"
+            onChange={(e) => handleImageChange(e, setServicePhoto, setServicePhotoPreview, "servicePhoto")}
+          />
+          <label
+            htmlFor="servicePhoto"
+            className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
+          >
+            {servicePhotoPreview ? "Change" : "Upload"}
+          </label>
+        </div>
+        {errors.servicePhoto && (
+          <span className="text-red-500 text-sm ">{errors.servicePhoto}*</span>
+        )}
+      </div>
+
+      {/* Crop Modal */}
       <ImageCropModal
         open={cropModalOpen}
         imageSrc={tempImageSrc}
         onClose={() => setCropModalOpen(false)}
         onCropComplete={handleBannerCropComplete}
       />
-   </>
-    );
+    </>
+  );
 }
 
-export default ServiceImages
+export default ServiceImages;

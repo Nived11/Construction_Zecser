@@ -1,8 +1,7 @@
 import { Plus, Trash2 } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-import { useServiceForm  } from "../hooks/useServiceForm";
+import { useServiceForm } from "../hooks/useServiceForm";
 import ServiceImages from "./ServiceImages";
-
 
 const AddServiceForm = () => {
   const {
@@ -14,15 +13,15 @@ const AddServiceForm = () => {
     status, setStatus,
     setServiceIcon,
     setServiceBanner,
-    setServicePhoto,  
+    setServicePhoto,
     serviceIconPreview, setServiceIconPreview,
     serviceBannerPreview, setServiceBannerPreview,
     servicePhotoPreview, setServicePhotoPreview,
     handleImageChange,
     handleSubmitForm,
     handleCancel,
-    
     errors,
+    validateField 
   } = useServiceForm();
 
   return (
@@ -36,7 +35,10 @@ const AddServiceForm = () => {
             <input
               type="text"
               value={serviceName}
-              onChange={(e) => setServiceName(e.target.value)}
+              onChange={(e) => {
+                setServiceName(e.target.value);
+                validateField("serviceName", e.target.value);
+              }}
               className="w-full px-4 py-2 border border-primary rounded focus:outline-none focus:ring-1 focus:ring-primary"
             />
             {errors.serviceName && (
@@ -46,18 +48,18 @@ const AddServiceForm = () => {
 
           {/* Icons Row */}
           <ServiceImages
-  serviceIconPreview={serviceIconPreview}
-  setServiceIconPreview={setServiceIconPreview}
-  serviceBannerPreview={serviceBannerPreview}
-  setServiceBannerPreview={setServiceBannerPreview}
-  servicePhotoPreview={servicePhotoPreview}
-  setServicePhotoPreview={setServicePhotoPreview}
-  handleImageChange={handleImageChange}
-  setServiceIcon={setServiceIcon}
-  setServiceBanner={setServiceBanner}
-  setServicePhoto={setServicePhoto}
-  errors={errors}
-/>
+            serviceIconPreview={serviceIconPreview}
+            setServiceIconPreview={setServiceIconPreview}
+            serviceBannerPreview={serviceBannerPreview}
+            setServiceBannerPreview={setServiceBannerPreview}
+            servicePhotoPreview={servicePhotoPreview}
+            setServicePhotoPreview={setServicePhotoPreview}
+            handleImageChange={(e, setFile, setPreview) =>  handleImageChange(e, setFile, setPreview, e.target.id) }
+            setServiceIcon={setServiceIcon}
+            setServiceBanner={setServiceBanner}
+            setServicePhoto={setServicePhoto}
+            errors={errors}
+          />
 
           {/* Service Sub Title */}
           <div className="w-full max-w-[866px] mt-15">
@@ -65,7 +67,10 @@ const AddServiceForm = () => {
             <input
               type="text"
               value={serviceSubTitle}
-              onChange={(e) => setServiceSubTitle(e.target.value)}
+              onChange={(e) => {
+                setServiceSubTitle(e.target.value);
+                validateField("serviceSubTitle", e.target.value);
+              }}
               className="w-full px-4 py-2 border border-primary"
             />
             {errors.serviceSubTitle && (
@@ -79,7 +84,10 @@ const AddServiceForm = () => {
             <textarea
               rows={5}
               value={serviceSubDescription}
-              onChange={(e) => setServiceSubDescription(e.target.value)}
+              onChange={(e) => {
+                setServiceSubDescription(e.target.value);
+                validateField("serviceSubDescription", e.target.value);
+              }}
               className="w-full px-4 py-2 border border-primary"
             />
             {errors.serviceSubDescription && (
@@ -101,12 +109,13 @@ const AddServiceForm = () => {
                     const updated = [...offers];
                     updated[index].heading = e.target.value;
                     setOffers(updated);
+                    validateField(`offers[${index}].heading`, e.target.value);
                   }}
                   className="w-full px-4 py-2 border border-primary"
                 />
-                {errors[`offer_heading_${index}`] && (
+                {errors[`offers[${index}].heading`] && (
                   <span className="text-red-500 text-sm">
-                    {errors[`offer_heading_${index}`]}*
+                    {errors[`offers[${index}].heading`]}*
                   </span>
                 )}
               </div>
@@ -123,17 +132,17 @@ const AddServiceForm = () => {
                       const updated = [...offers];
                       updated[index].description = e.target.value;
                       setOffers(updated);
+                      validateField(`offers[${index}].description`, e.target.value);
                     }}
                     className="w-full px-4 py-2 border border-primary"
                   />
-                  {errors[`whyus_description_${index}`] && (
+                  {errors[`offers[${index}].description`] && (
                     <span className="text-red-500 text-sm">
-                      {errors[`whyus_description_${index}`]}*
+                      {errors[`offers[${index}].description`]}*
                     </span>
                   )}
                 </div>
 
-                {/* Remove Button */}
                 {offers.length > 1 && (
                   <button
                     type="button"
@@ -144,7 +153,6 @@ const AddServiceForm = () => {
                   </button>
                 )}
 
-                {/* Add Button */}
                 {index === offers.length - 1 && offers.length < 6 && (
                   <button
                     type="button"
@@ -161,7 +169,6 @@ const AddServiceForm = () => {
           {/* Why Us - Dynamic */}
           {whyUsList.map((item, index) => (
             <div key={index} className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
-              {/* Heading */}
               <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Why Us Heading
@@ -173,17 +180,17 @@ const AddServiceForm = () => {
                     const updated = [...whyUsList];
                     updated[index].heading = e.target.value;
                     setWhyUsList(updated);
+                    validateField(`whyUsList[${index}].heading`, e.target.value);
                   }}
                   className="w-full px-4 py-2 border border-primary"
                 />
-                {errors[`whyus_heading_${index}`] && (
+                {errors[`whyUsList[${index}].heading`] && (
                   <span className="text-red-500 text-sm">
-                    {errors[`whyus_heading_${index}`]}*
+                    {errors[`whyUsList[${index}].heading`]}*
                   </span>
                 )}
               </div>
 
-              {/* Description + Buttons */}
               <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -196,17 +203,17 @@ const AddServiceForm = () => {
                       const updated = [...whyUsList];
                       updated[index].description = e.target.value;
                       setWhyUsList(updated);
+                      validateField(`whyUsList[${index}].description`, e.target.value);
                     }}
                     className="w-full px-4 py-2 border border-primary"
                   />
-                  {errors[`whyus_description_${index}`] && (
+                  {errors[`whyUsList[${index}].description`] && (
                     <span className="text-red-500 text-sm">
-                      {errors[`whyus_description_${index}`]}*
+                      {errors[`whyUsList[${index}].description`]}*
                     </span>
                   )}
                 </div>
 
-                {/* Remove Button */}
                 {whyUsList.length > 1 && (
                   <button
                     type="button"
@@ -217,7 +224,6 @@ const AddServiceForm = () => {
                   </button>
                 )}
 
-                {/* Add Button */}
                 {index === whyUsList.length - 1 && whyUsList.length < 6 && (
                   <button
                     type="button"
@@ -231,7 +237,6 @@ const AddServiceForm = () => {
             </div>
           ))}
 
-
           {/* Status */}
           <div className="w-full max-w-[866px]">
             <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
@@ -243,7 +248,10 @@ const AddServiceForm = () => {
                   type="radio"
                   value="active"
                   checked={status === "active"}
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    validateField("status", e.target.value);
+                  }}
                 />
               </label>
               <label className="flex items-center space-x-2">
@@ -253,7 +261,10 @@ const AddServiceForm = () => {
                   type="radio"
                   value="inactive"
                   checked={status === "inactive"}
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    validateField("status", e.target.value);
+                  }}
                 />
               </label>
             </div>
