@@ -1,0 +1,304 @@
+import { Upload, Plus } from "lucide-react";
+import { Toaster } from "react-hot-toast";
+import { useServiceForm } from "../hooks/useServiceForm";
+
+const AddServiceForm = () => {
+  const {
+    serviceName,
+    setServiceName,
+    serviceSubTitle,
+    setServiceSubTitle,
+    serviceSubDescription,
+    setServiceSubDescription,
+    offerHeading,
+    setOfferHeading,
+    offerDescription,
+    setOfferDescription,
+    whyUsHeading,
+    setWhyUsHeading,
+    whyUsDescription,
+    setWhyUsDescription,
+    status,
+    setStatus,
+    serviceIconPreview,
+    setServiceIconPreview,
+    serviceBannerPreview,
+    setServiceBannerPreview,
+    servicePhotoPreview,
+    setServicePhotoPreview,
+    handleImageChange,
+    handleSubmitForm,
+    handleCancel,
+    setServiceIcon,
+    setServiceBanner,
+    setServicePhoto,
+    errors,
+  } = useServiceForm();
+
+  return (
+    <>
+      <Toaster />
+      <form className="p-4 md:p-8 lg:p-10 xl:p-12" onSubmit={handleSubmitForm}>
+        <div className="flex flex-col gap-6">
+          {/* Service Name */}
+          <div className="w-full max-w-[866px]">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Service Name</label>
+            <input
+              type="text"
+              value={serviceName}
+              onChange={(e) => setServiceName(e.target.value)}
+              className="w-full px-4 py-2 border border-primary rounded focus:outline-none focus:ring-1 focus:ring-primary"
+              
+            />
+            {errors.serviceName && (
+              <span className="text-red-500 text-sm">{errors.serviceName}</span>
+            )}
+          </div>
+
+          {/* Icons Row */}
+          <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
+            {/* Service Icon */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Service Icon</label>
+              <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
+                {serviceIconPreview ? (
+                  <img src={serviceIconPreview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <Upload className="h-8 w-8 text-primary mb-2" />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="serviceIcon"
+                  onChange={(e) => handleImageChange(e, setServiceIcon, setServiceIconPreview)}
+                />
+                <label
+                  htmlFor="serviceIcon"
+                  className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
+                >
+                  Upload
+                </label>
+              </div>
+              {errors.serviceIcon && (
+                <span className="text-red-500 text-sm">{errors.serviceIcon}</span>
+              )}
+            </div>
+
+            {/* Service Banner */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Service Banner</label>
+              <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-[176px] h-[130px] lg:w-[380px] lg:h-[158px] overflow-hidden">
+                {serviceBannerPreview ? (
+                  <img src={serviceBannerPreview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <Upload className="h-8 w-8 text-primary mb-2" />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="serviceBanner"
+                  onChange={(e) => handleImageChange(e, setServiceBanner, setServiceBannerPreview)}
+                />
+                <label
+                  htmlFor="serviceBanner"
+                  className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
+                >
+                  Upload
+                </label>
+              </div>
+              {errors.serviceBanner && (
+                <span className="text-red-500 text-sm">{errors.serviceBanner}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Service Photo */}
+          <div className="w-[176px] h-[130px] lg:w-[380px] lg:h-[158px]">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Service Photo</label>
+            <div className="relative border-2 border-dashed border-primary flex flex-col items-center justify-center w-full h-full overflow-hidden">
+              {servicePhotoPreview ? (
+                <img src={servicePhotoPreview} alt="Preview" className="w-full h-full object-cover" />
+              ) : (
+                <Upload className="h-8 w-8 text-primary mb-2" />
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                id="servicePhoto"
+                onChange={(e) => handleImageChange(e, setServicePhoto, setServicePhotoPreview)}
+              />
+              <label
+                htmlFor="servicePhoto"
+                className="absolute mt-15 bg-primary text-white px-3 py-1 rounded text-xs cursor-pointer"
+              >
+                Upload
+              </label>
+            </div>
+            {errors.servicePhoto && (
+              <span className="text-red-500 text-sm">{errors.servicePhoto}</span>
+            )}
+          </div>
+
+          {/* Service Sub Title */}
+          <div className="w-full max-w-[866px] mt-10">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Service Sub Title</label>
+            <input
+              type="text"
+              value={serviceSubTitle}
+              onChange={(e) => setServiceSubTitle(e.target.value)}
+              className="w-full px-4 py-2 border border-primary"
+            />
+            {errors.serviceSubTitle && (
+              <span className="text-red-500 text-sm">{errors.serviceSubTitle}</span>
+            )}
+          </div>
+
+          {/* Service Sub Description */}
+          <div className="w-full max-w-[866px]">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Service Sub Description</label>
+            <textarea
+              rows={5}
+              value={serviceSubDescription}
+              onChange={(e) => setServiceSubDescription(e.target.value)}
+              className="w-full px-4 py-2 border border-primary"
+            />
+            {errors.serviceSubDescription && (
+              <span className="text-red-500 text-sm">{errors.serviceSubDescription}</span>
+            )}
+          </div>
+
+          {/* Offer */}
+          <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
+            <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                What We Offer Heading
+              </label>
+              <input
+                type="text"
+                value={offerHeading}
+                onChange={(e) => setOfferHeading(e.target.value)}
+                className="w-full px-4 py-2 border border-primary"
+              />
+              {errors.offerHeading && (
+                <span className="text-red-500 text-sm">{errors.offerHeading}</span>
+              )}
+            </div>
+
+            {/* Description + Button */}
+            <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  What We Offer Description
+                </label>
+                <textarea
+                  rows={4}
+                  value={offerDescription}
+                  onChange={(e) => setOfferDescription(e.target.value)}
+                  className="w-full px-4 py-2 border border-primary"
+                />
+                {errors.offerDescription && (
+                  <span className="text-red-500 text-sm">{errors.offerDescription}</span>
+                )}
+              </div>
+              <button
+                type="button"
+                className="bg-primary text-white px-3 py-2 mt-1 sm:mt-[30px] w-10" // aligns with top of textarea
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* Why Us */}
+          <div className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
+            <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Why Us Heading
+              </label>
+              <input
+                type="text"
+                value={whyUsHeading}
+                onChange={(e) => setWhyUsHeading(e.target.value)}
+                className="w-full px-4 py-2 border border-primary"
+              />
+              {errors.whyUsHeading && (
+                <span className="text-red-500 text-sm">{errors.whyUsHeading}</span>
+              )}
+            </div>
+
+            {/* Description + Button */}
+            <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Why Us Description
+                </label>
+                <textarea
+                  rows={4}
+                  value={whyUsDescription}
+                  onChange={(e) => setWhyUsDescription(e.target.value)}
+                  className="w-full px-4 py-2 border border-primary"
+                />
+                {errors.whyUsDescription && (
+                  <span className="text-red-500 text-sm">{errors.whyUsDescription}</span>
+                )}
+              </div>
+              <button
+                type="button"
+                className="bg-primary text-white px-3 py-2 mt-1 sm:mt-[30px] w-10"
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          </div>
+
+
+          {/* Status */}
+          <div className="w-full max-w-[866px]">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <div className="flex space-x-6">
+              <label className="flex items-center space-x-2">
+                <span className="text-sm text-gray-700">Active</span>
+                <input
+                  className="appearance-none w-4 h-4 border-2 border-primary rounded-full checked:bg-white checked:border-[5px] checked:border-primary focus:outline-none cursor-pointer"
+                  type="radio"
+                  value="active"
+                  checked={status === "active"}
+                  onChange={(e) => setStatus(e.target.value)}
+                />
+              </label>
+              <label className="flex items-center space-x-2">
+                <span className="text-sm text-gray-700">Inactive</span>
+                <input
+                  className="appearance-none w-4 h-4 border-2 border-primary rounded-full checked:bg-white checked:border-[5px] checked:border-primary focus:outline-none cursor-pointer"
+                  type="radio"
+                  value="inactive"
+                  checked={status === "inactive"}
+                  onChange={(e) => setStatus(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-4 mt-6">
+            <button type="submit" className="bg-primary text-white px-4 py-2 rounded-md">
+              Save Service
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="bg-white border border-primary text-gray-700 px-10 py-2 rounded-md"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </>
+  );
+};
+
+export default AddServiceForm;
