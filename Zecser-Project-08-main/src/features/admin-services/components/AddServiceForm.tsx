@@ -4,28 +4,15 @@ import { useServiceForm } from "../hooks/useServiceForm";
 
 const AddServiceForm = () => {
   const {
-    serviceName,
-    setServiceName,
-    serviceSubTitle,
-    setServiceSubTitle,
-    serviceSubDescription,
-    setServiceSubDescription,
-    offerHeading,
-    setOfferHeading,
-    offerDescription,
-    setOfferDescription,
-    whyUsHeading,
-    setWhyUsHeading,
-    whyUsDescription,
-    setWhyUsDescription,
-    status,
-    setStatus,
-    serviceIconPreview,
-    setServiceIconPreview,
-    serviceBannerPreview,
-    setServiceBannerPreview,
-    servicePhotoPreview,
-    setServicePhotoPreview,
+    serviceName, setServiceName,
+    serviceSubTitle, setServiceSubTitle,
+    serviceSubDescription, setServiceSubDescription,
+    offers, setOffers, addOffer,
+    whyUsList, setWhyUsList, addWhyUs,
+    status, setStatus,
+    serviceIconPreview, setServiceIconPreview,
+    serviceBannerPreview, setServiceBannerPreview,
+    servicePhotoPreview, setServicePhotoPreview,
     handleImageChange,
     handleSubmitForm,
     handleCancel,
@@ -48,7 +35,6 @@ const AddServiceForm = () => {
               value={serviceName}
               onChange={(e) => setServiceName(e.target.value)}
               className="w-full px-4 py-2 border border-primary rounded focus:outline-none focus:ring-1 focus:ring-primary"
-              
             />
             {errors.serviceName && (
               <span className="text-red-500 text-sm">{errors.serviceName}</span>
@@ -170,90 +156,123 @@ const AddServiceForm = () => {
             )}
           </div>
 
-          {/* Offer */}
-          <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
-            <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                What We Offer Heading
-              </label>
-              <input
-                type="text"
-                value={offerHeading}
-                onChange={(e) => setOfferHeading(e.target.value)}
-                className="w-full px-4 py-2 border border-primary"
-              />
-              {errors.offerHeading && (
-                <span className="text-red-500 text-sm">{errors.offerHeading}</span>
-              )}
-            </div>
-
-            {/* Description + Button */}
-            <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
-              <div className="flex-1">
+          {/* Offers - Dynamic */}
+          {offers.map((offer, index) => (
+            <div key={index} className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
+              <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  What We Offer Description
+                  What We Offer Heading
                 </label>
-                <textarea
-                  rows={4}
-                  value={offerDescription}
-                  onChange={(e) => setOfferDescription(e.target.value)}
+                <input
+                  type="text"
+                  value={offer.heading}
+                  onChange={(e) => {
+                    const updated = [...offers];
+                    updated[index].heading = e.target.value;
+                    setOffers(updated);
+                  }}
                   className="w-full px-4 py-2 border border-primary"
                 />
-                {errors.offerDescription && (
-                  <span className="text-red-500 text-sm">{errors.offerDescription}</span>
+                {errors[`offer_heading_${index}`] && (
+                  <span className="text-red-500 text-sm">
+                    {errors[`offer_heading_${index}`]}
+                  </span>
                 )}
               </div>
-              <button
-                type="button"
-                className="bg-primary text-white px-3 py-2 mt-1 sm:mt-[30px] w-10" // aligns with top of textarea
-              >
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
 
-          {/* Why Us */}
-          <div className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
-            <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Why Us Heading
-              </label>
-              <input
-                type="text"
-                value={whyUsHeading}
-                onChange={(e) => setWhyUsHeading(e.target.value)}
-                className="w-full px-4 py-2 border border-primary"
-              />
-              {errors.whyUsHeading && (
-                <span className="text-red-500 text-sm">{errors.whyUsHeading}</span>
-              )}
+              {/* Description + Button */}
+              <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    What We Offer Description
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={offer.description}
+                    onChange={(e) => {
+                      const updated = [...offers];
+                      updated[index].description = e.target.value;
+                      setOffers(updated);
+                    }}
+                    className="w-full px-4 py-2 border border-primary"
+                  />
+                  {errors[`whyus_description_${index}`] && (
+                    <span className="text-red-500 text-sm">
+                      {errors[`whyus_description_${index}`]}
+                    </span>
+                  )}
+                </div>
+                {index === offers.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={addOffer}
+                    className="bg-primary text-white px-3 py-2 mt-1 sm:mt-[30px] w-10"
+                  >
+                    <Plus size={16} />
+                  </button>
+                )}
+              </div>
             </div>
+          ))}
 
-            {/* Description + Button */}
-            <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
-              <div className="flex-1">
+          {/* Why Us - Dynamic */}
+          {whyUsList.map((item, index) => (
+            <div key={index} className="flex flex-col lg:flex-row gap-6 flex-wrap mt-4">
+              <div className="w-full sm:max-w-[256px] lg:max-w-[405px]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Why Us Description
+                  Why Us Heading
                 </label>
-                <textarea
-                  rows={4}
-                  value={whyUsDescription}
-                  onChange={(e) => setWhyUsDescription(e.target.value)}
+                <input
+                  type="text"
+                  value={item.heading}
+                  onChange={(e) => {
+                    const updated = [...whyUsList];
+                    updated[index].heading = e.target.value;
+                    setWhyUsList(updated);
+                  }}
                   className="w-full px-4 py-2 border border-primary"
                 />
-                {errors.whyUsDescription && (
-                  <span className="text-red-500 text-sm">{errors.whyUsDescription}</span>
+                {errors[`whyus_heading_${index}`] && (
+                  <span className="text-red-500 text-sm">
+                    {errors[`whyus_heading_${index}`]}
+                  </span>
                 )}
               </div>
-              <button
-                type="button"
-                className="bg-primary text-white px-3 py-2 mt-1 sm:mt-[30px] w-10"
-              >
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
 
+              {/* Description + Button */}
+              <div className="flex flex-col sm:flex-row sm:items-start w-full sm:max-w-[256px] lg:max-w-[405px] xl:ml-10 gap-2">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Why Us Description
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={item.description}
+                    onChange={(e) => {
+                      const updated = [...whyUsList];
+                      updated[index].description = e.target.value;
+                      setWhyUsList(updated);
+                    }}
+                    className="w-full px-4 py-2 border border-primary"
+                  />
+                  {errors[`whyus_description_${index}`] && (
+                    <span className="text-red-500 text-sm">
+                      {errors[`whyus_description_${index}`]}
+                    </span>
+                  )}
+                </div>
+                {index === whyUsList.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={addWhyUs}
+                    className="bg-primary text-white px-3 py-2 mt-1 sm:mt-[30px] w-10"
+                  >
+                    <Plus size={16} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
 
           {/* Status */}
           <div className="w-full max-w-[866px]">
