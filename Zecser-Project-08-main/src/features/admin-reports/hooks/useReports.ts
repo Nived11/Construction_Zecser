@@ -1,9 +1,15 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { reportsData } from "../data/reportsData";
 
 export const useReports = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // stats
   const totalProjects = reportsData.length;
@@ -51,5 +57,6 @@ export const useReports = () => {
     avgCompletion,
     filteredReports,
     statusColor,
+    loading,
   };
 };
