@@ -1,5 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { reportsData } from "../data/reportsData";
+// import { toast } from "react-hot-toast";
+// import api from "../../../lib/api"; // Uncomment if you have an API setup
+
 
 export const useReports = () => {
   const [search, setSearch] = useState("");
@@ -46,6 +49,23 @@ export const useReports = () => {
     }
   };
 
+  // const handleEditsubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     //     const res = await api.post("/api/services", formData, {
+  //     //   headers: { "Content-Type": "multipart/form-data" },
+  //     // });
+        
+  //     toast.success("Service saved successfully!");
+      
+      
+  //     } catch (error) {
+  //       console.error("Error submitting form:", error);
+  //       toast.error("Failed to save service. Please try again.");
+  //     }
+  // };
+
   return {
     search,
     setSearch,
@@ -58,5 +78,6 @@ export const useReports = () => {
     filteredReports,
     statusColor,
     loading,
+    // handleEditsubmit,
   };
 };

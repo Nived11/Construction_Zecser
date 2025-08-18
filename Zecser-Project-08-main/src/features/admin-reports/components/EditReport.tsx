@@ -1,14 +1,36 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react";
+import { Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
+
 
 interface EditReportPageProps {
   report: any;
   onBack: () => void;
 }
 
+
 const EditReportPage: React.FC<EditReportPageProps> = ({ report, onBack }) => {
+
+const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      toast.success("Report saved successfully!");
+
+     setTimeout(() => {
+      onBack();
+     }, 2000);
+
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Failed to save report. Try again.");
+    }
+  };
+
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto">
+      <Toaster/>
       {/* Header */}
       <p className="mb-6 text-[12px] sm:text-base md:text-[15px]">
         Monitor and manage all construction projects with real-time status
@@ -153,7 +175,7 @@ const EditReportPage: React.FC<EditReportPageProps> = ({ report, onBack }) => {
       {/* Save Button */}
       <div className="flex justify-center mt-8">
         <button
-          onClick={onBack} // replace with handlesubmit function
+          onClick={ handleSubmit } 
 
           className="px-15 py-2 bg-primary text-white rounded-full text-sm md:text-base font-medium shadow-md hover:bg-primary/90">
           Save
