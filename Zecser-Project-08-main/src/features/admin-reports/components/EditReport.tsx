@@ -16,7 +16,7 @@ const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      toast.success("Report saved successfully!");
+      toast.success("Saved successfully!");
 
      setTimeout(() => {
       onBack();
