@@ -1,14 +1,4 @@
-// reportsData.ts
-export interface Report {
-  id: string;
-  title: string;
-  clientId: string;
-  clientName: string;
-  status: "Completed" | "Ongoing" | "On Hold" | "Not Started";
-  deadline: string;
-  completion: number;
-  details: string;
-}
+import type { Report } from "../types";
 
 export const reportsData: Report[] = [
   {
@@ -19,7 +9,9 @@ export const reportsData: Report[] = [
     status: "Ongoing",
     deadline: "2025-09-30",
     completion: 75,
+    location: "Kochi",
     details: "Main structure completed, working on interior finishing",
+    category: "Favourites",
   },
   {
     id: "2",
@@ -29,7 +21,10 @@ export const reportsData: Report[] = [
     status: "Completed",
     deadline: "2025-07-18",
     completion: 100,
+    location: "Kochi",
     details: "All 24 units completed and handed over to client",
+    category: "Favourites",
+
   },
   {
     id: "3",
@@ -39,7 +34,10 @@ export const reportsData: Report[] = [
     status: "Ongoing",
     deadline: "2025-10-28",
     completion: 45,
+    location: "Kochi",
     details: "Foundation work completed, starting on main structure",
+    category: "Favourites",
+
   },
   {
     id: "4",
@@ -49,7 +47,10 @@ export const reportsData: Report[] = [
     status: "On Hold",
     deadline: "2025-12-30",
     completion: 25,
+    location: "Kochi",
     details: "Project paused due to permit issues, awaiting approval",
+    category: "Favourites",
+
   },
   {
     id: "5",
@@ -59,6 +60,8 @@ export const reportsData: Report[] = [
     status: "Not Started",
     deadline: "2025-06-30",
     completion: 0,
+    location: "Kochi",
     details: "Awaiting final blueprints and material delivery",
+    category: "Favourites",
   },
 ];

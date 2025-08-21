@@ -128,8 +128,7 @@ const validateField = async (fieldName: string, value: any) => {
       };
 
       try {
-      //     const res = await api.post("/api/services", formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
+      //     const res = await api.post("/api/services", formData, 
       // });
          console.log("Submitting form:", formData);
       toast.success("Service saved successfully!");
